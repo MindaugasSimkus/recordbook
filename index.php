@@ -6,15 +6,10 @@ session_start();
 
 
 
-if (isset($_POST['record'])) {
+if (isset($_POST['message'])) {
 	
-	$_SESSION['session_template'] = $_POST['record'];
-} else if (isset($_SESSION['session_template'])) {
-	$template_name = $_SESSION['session_template'];
-} else {
-	$template_name = $templates[0];
-}
-
+	array_push($_POST['message'], $_SESSION['messages']);
+} 
 
 
 
