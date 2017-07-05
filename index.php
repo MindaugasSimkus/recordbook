@@ -98,7 +98,7 @@ mysqli_close($conn);
 					}
 
 					//print_r($db_messages);
-
+// nd db eshop lentele products su id - integer, name - text, brand, price, weight.
 
 
 
