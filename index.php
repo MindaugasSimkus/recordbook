@@ -9,6 +9,29 @@ function get_records($array) {
 		echo "Record number " . $i . ": " . $value . "<br/>";
 	}
 }
+// Create connection
+$conn = new mysqli("localhost", "MindaugasSimkus", "agrastaspower", "mindaugassimkus");
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+echo "<br/>Connected successfully";
+
+$sql = "SELECT * FROM messages";
+$result = mysqli_query($conn, $sql);
+
+$db_messages = [];
+
+
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+       array_push($db_messages, $row);
+    }
+} else {
+    echo "0 results";
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,6 +66,7 @@ function get_records($array) {
 		<div class="row">
 			<div class="col-md-12">
 					<h3>Record log:<br/></h3>
+					<pre>
 					<?php 
 
 					session_start();
@@ -61,13 +85,22 @@ function get_records($array) {
 
 					} 
 
-					foreach ($_SESSION['messages'] as $entry) {
+					// foreach ($_SESSION['messages'] as $entry) {
 			
-						echo "Date: " . $entry['date'] . " message: " . $entry['message'] . "<br/>"; 
+					// 	echo "Date: " . $entry['date'] . " message: " . $entry['message'] . "<br/>"; 
+					// }
+
+					foreach ($db_messages as $message) {
+						echo  "<br/><div class='card'><div class='card-block'> [" . $message['id'] . "] <strong>" . $message['time'] . "</strong>: " . $message['body'] . "</div></div>";
 					}
+
+					//print_r($db_messages);
+
+
 
 
 					?>
+					</pre>
 			</div>
 		</div>
 	</div>	
