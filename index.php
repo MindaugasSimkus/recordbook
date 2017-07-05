@@ -1,4 +1,7 @@
 <?php
+date_default_timezone_set("Europe/Vilnius");
+echo date("Y-m-d H:i:s");// 2017-07-05
+
 function get_records($array) {
 	$i = 0;
 	foreach ($array as $key => $value) {
@@ -33,7 +36,7 @@ function get_records($array) {
 							</label>
 							<textarea class="form-control" name="message" id="message" rows="5" placeholder="Describe yourself here..."> </textarea>
 						</div>
-					<button class="btn btn-success" type="submit">Add</button>
+					<button class="btn btn-success" type="submit" id="button_submit" name="button_submit">Add</button>
 				</form>
 			</div>
 		</div>
@@ -41,7 +44,9 @@ function get_records($array) {
 			<div class="col-md-12">
 					<h3>Record log:<br/></h3>
 					<?php 
+
 					session_start();
+					
 					if (!isset($_SESSION['messages'])) {
 						$_SESSION['messages'] = [];
 						$_POST['message'] =[];
@@ -50,9 +55,18 @@ function get_records($array) {
 						$_POST['message'] = [];
 						echo "<h4 style='color: red'>Warning!!! Blank records are not accepted<br/></h4>";
 					} else {
-						array_push($_SESSION['messages'], $_POST['message']);
+						$msg = ['date' => date("Y-m-d H:i:s"), 'message' => $_POST['message']];
+						array_push($_SESSION['messages'], $msg);
+
+
 					} 
-					get_records($_SESSION['messages']); 
+
+					foreach ($_SESSION['messages'] as $entry) {
+			
+						echo "Date: " . $entry['date'] . " message: " . $entry['message'] . "<br/>"; 
+					}
+
+
 					?>
 			</div>
 		</div>
