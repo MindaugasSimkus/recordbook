@@ -1,6 +1,11 @@
 <?php
+//parsisiusti heidisql
 date_default_timezone_set("Europe/Vilnius");
 echo date("Y-m-d H:i:s");// 2017-07-05
+
+session_start();
+
+
 
 function get_records($array) {
 	$i = 0;
@@ -18,6 +23,17 @@ if (!$conn) {
 } 
 echo "<br/>Connected successfully";
 
+
+if (isset($_POST['message'])) {
+	$sql = "INSERT INTO messages (body) VALUES ('" . $_POST['message'] . "')";
+}
+
+if (mysqli_query($conn, $sql)) {
+	echo "New record";
+} else {
+	echo "Error" . $sql . "<br/>". mysqli_error($conn);
+}
+
 $sql = "SELECT * FROM messages";
 $result = mysqli_query($conn, $sql);
 
@@ -31,6 +47,8 @@ if (mysqli_num_rows($result) > 0) {
 } else {
     echo "0 results";
 }
+
+mysqli_close($conn);
 
 ?>
 <!DOCTYPE html>
@@ -69,21 +87,6 @@ if (mysqli_num_rows($result) > 0) {
 					<pre>
 					<?php 
 
-					session_start();
-					
-					if (!isset($_SESSION['messages'])) {
-						$_SESSION['messages'] = [];
-						$_POST['message'] =[];
-					} else if ($_POST['message'] == " ") {
-						$_SESSION['messages'] = $_SESSION['messages'];
-						$_POST['message'] = [];
-						echo "<h4 style='color: red'>Warning!!! Blank records are not accepted<br/></h4>";
-					} else {
-						$msg = ['date' => date("Y-m-d H:i:s"), 'message' => $_POST['message']];
-						array_push($_SESSION['messages'], $msg);
-
-
-					} 
 
 					// foreach ($_SESSION['messages'] as $entry) {
 			
